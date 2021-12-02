@@ -56,7 +56,12 @@ def search(gitlab_server, token, file_filter, text, group=None, project_filter=N
                 eprint("  File: ",fpath)
 
             if filename_regex:
-                matches=re.findall(file_filter, file['name'])
+                # GaA change: 
+                # To apply the regex to the full path, not just the file name.
+                fpath = file.get('path',None) if file.get('path',None)!=None else file.get('name',None)
+                matches=re.findall(file_filter, fpath)
+                # GaA was:
+                # matches=re.findall(file_filter, file['name'])
                 filename_matches = len(matches)>0
             else:
                 filename_matches=file_filter == file['name']
