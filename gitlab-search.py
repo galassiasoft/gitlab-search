@@ -69,7 +69,11 @@ def search(gitlab_server, token, file_filter, text, group=None, project_filter=N
             if filename_matches:
                 file_content = project.files.raw(file_path=file['path'], ref='master')
                 
-                if text in str(file_content):
+                # GaA change: 
+                # To have a case-insensitive comparison.
+                if text.lower() in str(file_content.lower()):
+                # GaA was:
+                # if text in str(file_content):
                     return_value.append({
                         "project": project.name,
                         "file": file['path']
